@@ -33,29 +33,6 @@ public class TrieNodeArray {
         this.children = children;
     }
 
-    public void insert(String word){
-      TrieNodeArray current = root;
-
-      for(char c : word.toCharArray()){
-          if(c< 'a' || c> 'z'){
-              throw new IllegalArgumentException("invalid character lol: ");
-          }
-
-          int idx = c - 'a';
-
-          if(current.getChildren()[idx] == null){
-              TrieNodeArray newNode = new TrieNodeArray();
-              newNode.setSymbol(String.valueOf(c));
-              current.getChildren()[idx] = newNode;
-          }
-
-          current = current.getChildren()[idx];
-         // System.out.println("ajsdfasdf");
-      }
-      current.setWord(true);
-    }
-
-
     public void insert2(String word){
         TrieNodeArray curr = root;
 
@@ -72,7 +49,7 @@ public class TrieNodeArray {
             if (curr.children[idx] == null) {
                // System.out.println("the index: " + idx + " is null in the array");
                 if(i == word.length()){
-                    System.out.println("word is true");
+                   // System.out.println("word is true");
                     curr.isWord = true;
                  }
                 else {
@@ -96,23 +73,32 @@ public class TrieNodeArray {
     }
     public boolean searchHelper(String word, TrieNodeArray current){
         String letter = word.substring(0,1);
-        System.out.println("Checking for letter: " + letter);
+       // System.out.println("I'm at: " + current.symbol);
         int idx = letter.charAt(0) - 'a';
         if(current.children[idx] == null) { //does current contain the letter
-            System.out.println("current index is null");
+           // System.out.println("current index is null");
             //now what do i do (question mark)
+            if(word.length() == 1 && current.isWord) {
+              //  System.out.println("yay");
+                return true;
+            }
             return false;
         }
         else if(word.length() == 1 && current.isWord) {
-            System.out.println("yay");
+          //  System.out.println("yay");
             return true;
         }
         else{
             System.out.println(word.length());
             System.out.println(current.isWord);
-            System.out.println("Gotta scooch down");
+           // System.out.println("Gotta scooch down");
             System.out.println();
-            return searchHelper(word.substring(1), current.children[idx]);
+            if(word.length() == 1) {
+                return searchHelper(word.substring(0), current.children[idx]);
+            }
+            else {
+                return searchHelper(word.substring(1), current.children[idx]);
+            } //you aren't actually getting to the last index
         }
     }
 
